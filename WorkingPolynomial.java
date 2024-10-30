@@ -31,7 +31,7 @@ public final class WorkingPolynomial<T> {
      * @return a new polynomial
      */
     public static final <S> WorkingPolynomial<S> from(List<S> coefficients) {
-        return new WorkingPolynomial<>(List.copyOf(coefficients)); 
+        return new WorkingPolynomial<>(List.copyOf(coefficients));
     }
 
     /**
@@ -69,8 +69,8 @@ public final class WorkingPolynomial<T> {
 
         List<T> a = this.getCoefficients(); //coefficients of the first polynomial
         List<T> b = other.getCoefficients(); //coefficients of the second polynomial
-
-        int minLength = Math.min(a.size(), b.size()); //computing the length of the longer list
+        //fixed min --> max
+        int minLength = Math.max(a.size(), b.size()); //computing the length of the longer list
         List<T> sum_list = new ArrayList<>(minLength); //a new list storing the sum values
 
         //initializing the iterators
@@ -104,6 +104,7 @@ public final class WorkingPolynomial<T> {
         assert ring != null : "ring cannot be null";
         assert list != null : "list cannot be null";
         assert iterator != null : "iterator cannot be null";
+        //Switched order of variables for correct functionality
         return (iterator.hasNext()) ? iterator.next() : ring.zero();
     }
 
@@ -159,9 +160,10 @@ public final class WorkingPolynomial<T> {
                 T result = ring.product(a_factor, b_factor); //multiplies the factors
                 product = ring.sum(product, result); //sums the result of the multiplication with the previous result
             }
+            //Adds products to list
             product_list.add(product);
         }        
-       return new WorkingPolynomial<>(product_list); 
+        return new WorkingPolynomial<>(product_list);
     }
 
     /**
@@ -198,6 +200,7 @@ public final class WorkingPolynomial<T> {
     public static void main(String[] args) {
         Ring<Integer> intRing = new IntegerRing();
         PolynomialRing<Integer> polyRing = PolynomialRing.instance(intRing);
+        //Added type <T>
         WorkingPolynomial<Integer> p1 = WorkingPolynomial.from(List.of(1, 2, 3));
         WorkingPolynomial<Integer> p2 = WorkingPolynomial.from(List.of(1, 2, 3));
 
@@ -205,3 +208,4 @@ public final class WorkingPolynomial<T> {
 
     }
 }
+
